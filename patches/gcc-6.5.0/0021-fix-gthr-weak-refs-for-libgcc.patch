@@ -23,12 +23,11 @@ https://sourceware.org/ml/libc-alpha/2019-08/msg00438.html
  2 files changed, 9 insertions(+)
  create mode 100644 libgcc/config/t-gthr-noweak
 
-diff --git a/libgcc/config.host b/libgcc/config.host
-index 122113fc519..fe1b9ab93d5 100644
---- a/libgcc/config.host
-+++ b/libgcc/config.host
-@@ -1500,3 +1500,10 @@ aarch64*-*-*)
- 	tm_file="${tm_file} aarch64/value-unwind.h"
+diff -ur a/libgcc/config.host b/libgcc/config.host
+--- a/libgcc/config.host    2017-11-21 10:41:34
++++ b/libgcc/config.host    2022-09-21 14:35:52
+@@ -1400,3 +1400,10 @@
+ 	tm_file="${tm_file} i386/value-unwind.h"
  	;;
  esac
 +
