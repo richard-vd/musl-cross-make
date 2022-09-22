@@ -1,0 +1,31 @@
+diff -ur linux-5.15.68.orig/scripts/headers_install.sh linux-5.15.68.tmp/scripts/headers_install.sh
+--- linux-5.15.68.orig/scripts/headers_install.sh	2022-09-15 11:30:08
++++ linux-5.15.68.tmp/scripts/headers_install.sh	2022-09-22 17:58:11
+@@ -24,7 +24,7 @@
+ trap 'rm -f $OUTFILE $TMPFILE' EXIT
+ 
+ # SPDX-License-Identifier with GPL variants must have "WITH Linux-syscall-note"
+-if [ -n "$(sed -n -e "/SPDX-License-Identifier:.*GPL-/{/WITH Linux-syscall-note/!p}" $INFILE)" ]; then
++if [ -n "$(sed -n -e "/SPDX-License-Identifier:.*GPL-/{/WITH Linux-syscall-note/!p;}" $INFILE)" ]; then
+ 	echo "error: $INFILE: missing \"WITH Linux-syscall-note\" for SPDX-License-Identifier" >&2
+ 	exit 1
+ fi
+@@ -32,7 +32,7 @@
+ sed -E -e '
+ 	s/([[:space:](])(__user|__force|__iomem)[[:space:]]/\1/g
+ 	s/__attribute_const__([[:space:]]|$)/\1/g
+-	s@^#include <linux/compiler(|_types).h>@@
++	s@^#include <linux/compiler(_types)?.h>@@
+ 	s/(^|[^a-zA-Z0-9])__packed([^a-zA-Z0-9_]|$)/\1__attribute__((packed))\2/g
+ 	s/(^|[[:space:](])(inline|asm|volatile)([[:space:](]|$)/\1__\2__\3/g
+ 	s@#(ifndef|define|endif[[:space:]]*/[*])[[:space:]]*_UAPI@#\1 @
+@@ -56,7 +56,8 @@
+ 	P
+ 	D
+ :check
+-	s:^\(CONFIG_[[:alnum:]_]*\):\1\n:
++	s:^\(CONFIG_[[:alnum:]_]*\):\1\
++	:
+ 	t print
+ 	s:^[[:alnum:]_][[:alnum:]_]*::
+ 	s:^[^[:alnum:]_][^[:alnum:]_]*::
